@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}CCS Sit-in Monitor — Home{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
+{% endblock %}
+
+{% block content %}
+<!-- ═══════════════════ NAVBAR ═══════════════════ -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-icon">⊙</span>
+    <span class="logo-text">CCS Sit-in Monitor</span>
+  </div>
+  <ul class="nav-links">
+    <li>
+      <button id="darkModeToggle" class="dark-mode-btn dark-toggle" aria-label="Toggle dark mode">🌙</button>
+    </li>
+    <li><a href="{{ url_for('landing') }}" class="active">Home</a></li>
+    <li><a href="#community">Community</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="{{ url_for('login') }}">Login</a></li>
+    <li><a href="{{ url_for('register') }}" class="btn-register">Register</a></li>
+
+  </ul>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="hero-bg-cover"></div>
+  <div class="hero-content">
+    <span class="hero-badge">✦ COLLEGE OF COMPUTER STUDIES</span>
+    <h1 class="hero-title">
+      Smart Lab <span class="teal">Sit-in</span><br>Monitoring System
+    </h1>
+    <p class="hero-sub">
+      Track sessions, reserve workstations, earn rewards — all in one modern platform built for CCS students.
+    </p>
+    <div class="hero-ctas">
+      <a href="{{ url_for('register') }}" class="btn-primary">Get Started</a>
+      <a href="{{ url_for('login') }}" class="btn-outline">Login</a>
+    </div>
+  </div>
+
+  <div class="hero-graphic">
+    <!--
+      HERO IMAGE PLACEHOLDER
+      ─────────────────────────────────────────────────────────
+      To add your image later, replace the <div class="hero-img-placeholder">
+      block with:
+        <img src="{{ url_for('static', filename='images/hero.jpg') }}"
+             class="hero-img" alt="CCS Lab" />
+      and drop your image in static/images/hero.jpg
+      ─────────────────────────────────────────────────────────
+    -->
+    <img src="{{ url_for('static', filename='images/uclogo.webp') }}"
+             class="hero-img" alt="CCS Lab" />
+      <div class="hero-img-inner">
+      </div>
+      <div class="hero-img-glow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ HALL OF FAME ═══════════════════ -->
+<section class="hof" id="about">
+  <h2 class="hof-title">🏆 HALL OF FAME | TOP 10 STUDENTS</h2>
+
+  <!-- PODIUM — TOP 3 -->
+  <div class="podium">
+    <!-- #2 LEFT -->
+    {% if top3|length >= 2 %}
+    <div class="podium-card rank-2">
+      <div class="podium-rank">#2</div>
+      <div class="avatar avatar-silver">{{ get_initials(top3[1].student_name) }}</div>
+      <div class="podium-name">{{ top3[1].student_name }}</div>
+      <div class="podium-course">{{ top3[1].course }}</div>
+      <div class="podium-pts">{{ top3[1].reward_points }} pts</div>
+      <div class="podium-sessions">{{ top3[1].total_sessions }} sessions</div>
+    </div>
+    {% endif %}
+
+    <!-- #1 CENTER (elevated) -->
+    {% if top3|length >= 1 %}
+    <div class="podium-card rank-1">
+      <span class="crown">👑</span>
+      <div class="podium-rank">#1</div>
+      <div class="avatar avatar-gold">{{ get_initials(top3[0].student_name) }}</div>
+      <div class="podium-name">{{ top3[0].student_name }}</div>
+      <div class="podium-course">{{ top3[0].course }}</div>
+      <div class="podium-pts">{{ top3[0].reward_points }} pts</div>
+      <div class="podium-sessions">{{ top3[0].total_sessions }} sessions</div>
+    </div>
+    {% endif %}
+
+    <!-- #3 RIGHT -->
+    {% if top3|length >= 3 %}
+    <div class="podium-card rank-3">
+      <div class="podium-rank">#3</div>
+      <div class="avatar avatar-bronze">{{ get_initials(top3[2].student_name) }}</div>
+      <div class="podium-name">{{ top3[2].student_name }}</div>
+      <div class="podium-course">{{ top3[2].course }}</div>
+      <div class="podium-pts">{{ top3[2].reward_points }} pts</div>
+      <div class="podium-sessions">{{ top3[2].total_sessions }} sessions</div>
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- RANK 4–7 LIST -->
+  <div class="hof-list">
+    {% for student in rest %}
+    <div class="hof-item">
+      <span class="hof-rank">{{ loop.index + 3 }}</span>
+      <div class="hof-avatar">{{ get_initials(student.student_name) }}</div>
+      <div class="hof-info">
+        <span class="hof-name">{{ student.student_name }}</span>
+        <span class="hof-course">{{ student.course }}</span>
+      </div>
+      <span class="hof-pts">{{ student.reward_points }} pts</span>
+    </div>
+    {% else %}
+    <p style="text-align:center;color:var(--text-muted);padding:1rem 0;">No leaderboard data yet.</p>
+    {% endfor %}
+  </div>
+</section>
+<section class="landing-testimonials" style="padding: 3rem 1rem; max-width: 1200px; margin: 0 auto;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-size: 2rem; color: #333;">What Our Students Say</h2>
+        <p style="color: #666;">Real feedback from students using the CCS Sit-in Monitoring System</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+        {% for t in approved_testimonials %}
+        <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.05); position: relative;">
+            <div style="font-size: 3rem; color: #e0e0e0; position: absolute; top: -10px; left: 10px; line-height: 1;">“</div>
+            <p style="color: #444; font-style: italic; margin-bottom: 1rem; position: relative; z-index: 1;">
+                {{ t.testimonial }}
+            </p>
+            <div style="border-top: 1px solid #f0f0f0; padding-top: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <strong style="color: #333; display: block;">{{ t.student_name }}</strong>
+                    <span style="color: #888; font-size: 0.85rem;">{{ t.course }}</span>
+                </div>
+                <span style="color: #aaa; font-size: 0.8rem;">{{ t.date }}</span>
+            </div>
+        </div>
+        {% else %}
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #888; background: #f9f9f9; border-radius: 8px;">
+            No verified student testimonials yet. Be the first to leave a review!
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <p>© 2025 CCS Sit-in Monitor — College of Computer Studies</p>
+</footer>
+{% endblock %}

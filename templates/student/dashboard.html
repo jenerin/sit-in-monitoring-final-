@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <<aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+    <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+    <a href="{{ url_for('student_reservation') }}" class="nav-item" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+    <div class="nav-section-label">COMMUNITY</div>
+    <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+    <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+    <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <!-- MAIN -->
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">Dashboard</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn" title="Notifications">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- PROFILE HEADER -->
+      <div class="profile-header">
+        <div class="profile-info">
+          <h2 class="greeting">Hello, {{ student.name.split()[0] }}! 👋</h2>
+          <p class="profile-details">
+            {{ student.course }} &nbsp;·&nbsp; Year {{ student.year }} &nbsp;·&nbsp; {{ student.id }}
+          </p>
+        </div>
+        {% if student.avatar %}
+          <img src="{{ url_for('static', filename=student.avatar) }}"
+               class="avatar-photo" alt="{{ student.name }}" />
+        {% else %}
+          <div class="avatar-circle">{{ get_initials(student.name) }}</div>
+        {% endif %}
+      </div>
+
+      <!-- STATS CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card border-teal">
+          <div class="stat-label">SESSIONS LEFT</div>
+          <div class="stat-value">{{ student.sessions_left }}</div>
+        </div>
+        <div class="stat-card border-orange">
+          <div class="stat-label">REWARD POINTS</div>
+          <div class="stat-value">{{ student.reward_points }}</div>
+        </div>
+        <div class="stat-card border-purple">
+          <div class="stat-label">ACTIVE SESSION</div>
+          <div class="stat-value">
+            {% if student.active_session %}
+              <span class="dot-green"></span> Yes
+            {% else %}
+              <span class="dot-gray"></span> No
+            {% endif %}
+          </div>
+        </div>
+        <div class="stat-card border-blue">
+          <div class="stat-label">SIT-IN COUNT</div>
+          <div class="stat-value">{{ student.sit_in_count }}</div>
+        </div>
+      </div>
+
+      <!-- ACTIVE SESSION BANNER -->
+      {% if student.active_session and active_session %}
+      <div class="active-session-banner">
+        <div class="active-session-info">
+          <span class="dot-green"></span>
+          <div>
+            <strong>Active Session</strong>
+            <span>{{ active_session.lab }} · {{ active_session.subject }} · Started {{ active_session.time_in }}</span>
+          </div>
+        </div>
+        <a href="{{ url_for('student_end_session', session_id=active_session.id) }}"
+           class="btn-end"
+           onclick="return confirm('Mark your session as done?')">✔ Mark Done</a>
+      </div>
+      {% endif %}
+
+      <!-- SIT-IN SUMMARY -->
+      <div class="page-card">
+        <h3 class="section-title">◄ Sit-in Summary</h3>
+        <div class="sitin-summary-grid">
+          <div class="summary-item">
+            <div class="summary-label">Total Hours</div>
+            <div class="summary-value">{{ sitin_summary.total_hours }}h</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Total Sessions</div>
+            <div class="summary-value">{{ sitin_summary.total_sessions }}</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Avg Duration</div>
+            <div class="summary-value">{{ sitin_summary.avg_duration }}h</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Longest Session</div>
+            <div class="summary-value">{{ sitin_summary.longest_duration }}h</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SESSION TABLE -->
+      <div class="page-card">
+        <h3 class="section-title">◄ Recent Sessions</h3>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Time In</th>
+                <th>Time Out</th>
+                <th>Duration</th>
+                <th>PC No.</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for s in my_sessions[:10] %}
+              <tr>
+                <td>{{ s.date }}</td>
+                <td>{{ s.time_in }}</td>
+                <td>{{ s.time_out or '—' }}</td>
+                <td>
+                  {% if s.time_in and s.time_out %}
+                    {% set duration = ((s.time_out.split(':')[0]|int * 60 + s.time_out.split(':')[1]|int) - (s.time_in.split(':')[0]|int * 60 + s.time_in.split(':')[1]|int)) / 60 %}
+                    {{ duration|round(2) }}h
+                  {% else %}
+                    —
+                  {% endif %}
+                </td>
+                <td>{{ s.get('pc_number', '—') }}</td>
+                <td>
+                  <span class="badge-status {{ 'badge-active' if s.status == 'ACTIVE' else 'badge-done' }}">
+                    {{ s.status }}
+                  </span>
+                </td>
+              </tr>
+              {% else %}
+              <tr>
+                <td colspan="6" style="text-align:center;padding:2rem;color:var(--text-secondary);">No sessions yet.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% if my_sessions|length > 10 %}
+        <div style="padding:0.75rem 1rem 0.5rem;border-top:1px solid var(--border-color);">
+          <a href="{{ url_for('student_history') }}" style="color:var(--teal);font-size:0.82rem;text-decoration:none;">View all sessions →</a>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- ANNOUNCEMENTS -->
+      <div class="announcements-section">
+        <div class="section-header">
+          <h3>◄ Announcements</h3>
+          <a href="{{ url_for('student_announcements') }}" class="view-all">VIEW ALL</a>
+        </div>
+        <div class="announcements-list">
+          {% for ann in announcements %}
+          <div class="announcement-item">
+            <div class="ann-title">{{ ann.title }}</div>
+            <div class="ann-body">{{ ann.body }}</div>
+            <div class="ann-date">{{ ann.date }}</div>
+          </div>
+          {% else %}
+          <p class="empty-msg">No announcements yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/student/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Analytics — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">Analytics</h2>
+        <p class="page-sub">System usage overview</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card border-teal">
+          <div class="stat-label">TOTAL STUDENTS</div>
+          <div class="stat-value">{{ students|length }}</div>
+        </div>
+        <div class="stat-card border-orange">
+          <div class="stat-label">TOTAL SESSIONS</div>
+          <div class="stat-value">{{ sessions|length }}</div>
+        </div>
+        <div class="stat-card border-purple">
+          <div class="stat-label">ACTIVE NOW</div>
+          <div class="stat-value">{{ sessions|selectattr('status','eq','ACTIVE')|list|length }}</div>
+        </div>
+        <div class="stat-card border-blue">
+          <div class="stat-label">COMPLETED</div>
+          <div class="stat-value">{{ sessions|selectattr('status','eq','DONE')|list|length }}</div>
+        </div>
+      </div>
+
+      <div class="page-card" style="margin-top:1.5rem;">
+        <h3 class="section-title">Course Distribution</h3>
+        <div class="analytics-bars">
+          {% set courses = ['BSCS','BSIT','BSIS','ACT'] %}
+          {% for course in courses %}
+          {% set count = students|selectattr('course','eq',course)|list|length %}
+          <div class="bar-row">
+            <span class="bar-label">{{ course }}</span>
+            <div class="bar-track">
+             <div class="progress-container" 
+     style="--progress-width: {{ ((count / students|length * 100) if students|length > 0 else 0) | round(0) }}%;">
+    <div class="bar-fill" style="width: var(--progress-width);"></div>
+</div>
+            <span class="bar-count">{{ count }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

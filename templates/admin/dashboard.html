@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  
+  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+ <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <!-- ═══════════════════ MAIN AREA ═══════════════════ -->
+  <div class="main-area">
+
+    <!-- TOP NAV -->
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <!-- CONTENT -->
+    <div class="content">
+
+      <!-- PAGE HEADER -->
+      <div class="page-header">
+        <h2 class="page-title">Admin Dashboard</h2>
+        <p class="page-sub">CCS Sit-in Monitoring — Overview</p>
+      </div>
+
+      <!-- STATS CARDS -->
+      <div class="stats-grid">
+        <div class="stat-card border-teal">
+          <div class="stat-label">TOTAL STUDENTS</div>
+          <div class="stat-value">{{ stats.total_students }}</div>
+        </div>
+        <div class="stat-card border-orange">
+          <div class="stat-label">ACTIVE SIT-INS</div>
+          <div class="stat-value">{{ stats.active_sitins }}</div>
+        </div>
+        <div class="stat-card border-purple">
+          <div class="stat-label">TOTAL SIT-INS</div>
+          <div class="stat-value">{{ stats.total_sitins }}</div>
+        </div>
+        <div class="stat-card border-blue">
+          <div class="stat-label">RESERVATIONS</div>
+          <div class="stat-value">{{ stats.reservations }}</div>
+        </div>
+        <div class="stat-card border-teal">
+          <div class="stat-label">FEEDBACK ITEMS</div>
+          <div class="stat-value">{{ stats.feedback_count }}</div>
+        </div>
+            <a href="{{ url_for('admin_current_sitins') }}" class="qa-btn">
+              <span>↪</span> Current Sit-ins
+            </a>
+            <a href="{{ url_for('admin_announcements') }}" class="qa-btn">
+              <span>📢</span> Post Announcement
+            </a>
+          </div>
+        </div>
+
+        <!-- RECENT SIT-INS -->
+        <div class="widget">
+          <div class="widget-header">
+            <span>ℹ Recent Sit-ins</span>
+          </div>
+          <div class="recent-list">
+            {% for s in recent_sitins %}
+            <div class="recent-item">
+              <div class="recent-left">
+                <div class="recent-avatar">
+                  {{ get_initials(s.student_name) }}
+                </div>
+                <div class="recent-info">
+                  <div class="recent-name">{{ s.student_name }}</div>
+                  <div class="recent-meta">{{ s.student_id }} · {{ s.lab }} · {{ s.subject }}</div>
+                </div>
+              </div>
+              <span class="badge-status {{ 'badge-active' if s.status == 'ACTIVE' else 'badge-done' }}">
+                {{ s.status }}
+              </span>
+            </div>
+            {% else %}
+            <p class="empty-msg" style="padding:1rem;">No recent sit-ins.</p>
+            {% endfor %}
+          </div>
+        </div>
+
+      </div><!-- /widgets-row -->
+
+      <!-- RECENT FEEDBACK -->
+      <div class="widget" style="margin-top:1.5rem;">
+        <div class="widget-header">
+          <span>💬 Recent Student Feedback</span>
+        </div>
+        <div class="recent-list">
+          {% if recent_feedback %}
+            {% for s in recent_feedback %}
+            <div class="recent-item feedback-item">
+              <div>
+                <div class="recent-name">{{ s.student_name }} · {{ s.lab }}</div>
+                <div class="recent-meta">{{ s.date }} · {{ s.subject or 'No subject' }}</div>
+                <p class="feedback-snippet">{{ s.feedback|truncate(100, True, '...') }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p class="empty-msg" style="padding:1rem;">No feedback submitted yet.</p>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- PENDING RESERVATIONS -->
+      {% if pending_reservations %}
+      <div class="widget" style="margin-top:1.5rem;">
+        <div class="widget-header" style="display:flex;align-items:center;gap:.6rem;">
+          <span>🖥️ Pending Reservations</span>
+          <span class="badge" style="background:rgba(245,158,11,.2);color:#f59e0b;border:1px solid rgba(245,158,11,.4);padding:.15rem .55rem;border-radius:999px;font-size:.75rem;font-weight:700;">{{ pending_reservations|length }}</span>
+        </div>
+        <div class="recent-list">
+          {% for r in pending_reservations %}
+          <div class="recent-item">
+            <div class="recent-left">
+              <div class="recent-avatar">{{ get_initials(r.student_name) }}</div>
+              <div class="recent-info">
+                <div class="recent-name">{{ r.student_name }}</div>
+                <div class="recent-meta">{{ r.lab }} · PC {{ r.pc_number }} · {{ r.date }} · {{ r.time_slot }}</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:.5rem;align-items:center;">
+              <a href="{{ url_for('admin_approve_reservation', res_id=r.id) }}" class="btn-approve" onclick="return confirm('Approve this reservation?')" style="font-size:.75rem;padding:.3rem .7rem;">Approve</a>
+              <a href="{{ url_for('admin_reject_reservation', res_id=r.id) }}" class="btn-reject" onclick="return confirm('Reject this reservation?')" style="font-size:.75rem;padding:.3rem .7rem;">Reject</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <div style="padding:.75rem 1rem .5rem;border-top:1px solid rgba(255,255,255,.06);">
+          <a href="{{ url_for('admin_reservation') }}" style="color:var(--teal);font-size:.82rem;text-decoration:none;">View all reservations →</a>
+        </div>
+      </div>
+      {% endif %}
+    </div><!-- /content -->
+  </div><!-- /main-area -->
+</div><!-- /layout -->
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/dashboard.js') }}"></script>
+{% endblock %}

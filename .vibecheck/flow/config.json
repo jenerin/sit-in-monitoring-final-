@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "projectName": "sit-in-monitoring-final--main",
+  "userName": "developer",
+  "skillLevel": "intermediate",
+  "outputFolder": ".vibecheck/flow",
+  "planningArtifacts": ".vibecheck\\flow\\planning-artifacts",
+  "implementationArtifacts": ".vibecheck\\flow\\implementation-artifacts",
+  "installedAt": "2026-05-22T14:15:03.564Z",
+  "ide": [
+    "vscode"
+  ]
+}

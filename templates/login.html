@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Login — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
+{% endblock %}
+
+{% block content %}
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-icon">⊙</span>
+    <span class="logo-text">CCS Sit-in Monitor</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="{{ url_for('landing') }}">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="{{ url_for('login') }}" class="active">Login</a></li>
+    <li><a href="{{ url_for('register') }}" class="btn-register">Register</a></li>
+  </ul>
+</nav>
+
+<!-- AUTH WRAPPER -->
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span class="logo-icon">⊙</span>
+      <span class="logo-text">CCS Sit-in Monitor</span>
+    </div>
+
+    <h2 class="auth-title">Welcome Back</h2>
+    <p class="auth-sub">Sign in to your account to continue</p>
+
+    <form method="POST" action="{{ url_for('login') }}" class="auth-form">
+      <div class="form-group">
+        <label for="student_id">Student ID / Admin</label>
+        <input
+          type="text"
+          id="student_id"
+          name="student_id"
+          placeholder="e.g. 2021-00001"
+          autocomplete="username"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <button type="submit" class="btn-auth">Login</button>
+    </form>
+
+    <p class="auth-switch">
+      Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+    </p>
+
+  </div>
+</div>
+{% endblock %}

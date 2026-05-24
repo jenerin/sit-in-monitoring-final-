@@ -1,0 +1,264 @@
+/* Software Apps Page Styles */
+
+.import-export-section {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.import-form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.file-label:hover {
+  border-color: var(--teal);
+}
+
+.file-label input[type="file"] {
+  display: none;
+}
+
+.btn-import {
+  padding: 0.5rem 1rem;
+  background: var(--teal);
+  color: #0b0f19;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.85rem;
+}
+
+.btn-import:hover {
+  background: var(--teal-dim);
+  transform: translateY(-1px);
+}
+
+.software-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.lab-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lab-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.82rem;
+  transition: all 0.2s;
+}
+
+.lab-pill:hover,
+.lab-pill.active {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.software-table-wrapper {
+  overflow-x: auto;
+}
+
+.software-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.software-table th,
+.software-table td {
+  padding: 0.95rem 0.85rem;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: middle;
+}
+
+.software-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+
+.software-action-cell {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-toggle,
+.btn-delete {
+  min-width: 80px;
+}
+
+.software-table tr:hover {
+  background: var(--bg2);
+}
+
+.empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+  font-style: italic;
+}
+
+.software-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem;
+  transition: all 0.2s;
+}
+
+.software-card:hover {
+  border-color: var(--teal);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.software-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.software-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.software-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+}
+
+.status-installed {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.status-not-installed {
+  background: rgba(107, 114, 128, 0.1);
+  color: var(--text-muted);
+}
+
+.software-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.detail-item {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.detail-label {
+  color: var(--text-muted);
+  font-weight: 600;
+  min-width: 70px;
+}
+
+.detail-value {
+  color: var(--text);
+}
+
+.software-description {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--bg2);
+  border-radius: 6px;
+}
+
+.software-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.software-actions form {
+  display: inline;
+}
+
+.btn-toggle {
+  padding: 0.4rem 0.8rem;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+}
+
+.btn-toggle:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-delete {
+  padding: 0.4rem 0.8rem;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.8rem;
+}
+
+.btn-delete:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.empty-msg {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem;
+  font-style: italic;
+  grid-column: 1 / -1;
+}

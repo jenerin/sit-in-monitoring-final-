@@ -1,0 +1,67 @@
+/* ═══════════════════════════════════════════════════════════
+   student/edit_profile.css
+   ═══════════════════════════════════════════════════════════ */
+
+.edit-form .form-group { margin-bottom: 1rem; }
+
+/* ── Avatar Upload ────────────────────────────────────────── */
+.profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-avatar-section h3 { font-size: 1.1rem; font-weight: 700; }
+.profile-avatar-section p  { color: var(--text-muted); font-size: .85rem; margin-top: .2rem; }
+
+/* Wrapper that holds the avatar + camera button */
+.avatar-upload-wrap {
+  position: relative;
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+}
+
+/* Uploaded photo */
+.avatar-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--teal);
+  display: block;
+}
+
+/* Initials fallback (reuses .avatar-circle from dashboard.css) */
+.avatar-upload-wrap .avatar-circle {
+  width: 80px;
+  height: 80px;
+  font-size: 1.6rem;
+}
+
+/* Camera overlay button */
+.camera-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #0b0f19;
+  font-size: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid var(--bg2);
+  transition: background .15s, transform .1s;
+  line-height: 1;
+}
+.camera-btn:hover {
+  background: var(--teal-dim);
+  transform: scale(1.1);
+}

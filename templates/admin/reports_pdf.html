@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CCS Sit-in Report — {{ generated }}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 12px;
+      color: #1a1a2e;
+      background: #fff;
+      padding: 2rem;
+    }
+
+    /* Header */
+    .report-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 3px solid #00c9a7;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .report-header h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0b0f19;
+    }
+    .report-header .logo {
+      font-size: 14px;
+      font-weight: 700;
+      color: #00c9a7;
+    }
+    .report-meta {
+      font-size: 11px;
+      color: #555;
+      margin-top: .25rem;
+    }
+
+    /* Summary boxes */
+    .summary-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .summary-box {
+      flex: 1;
+      border: 1px solid #ddd;
+      border-top: 3px solid #00c9a7;
+      border-radius: 6px;
+      padding: .75rem 1rem;
+    }
+    .summary-box:nth-child(2) { border-top-color: #f59e0b; }
+    .summary-box:nth-child(3) { border-top-color: #8b5cf6; }
+    .summary-box:nth-child(4) { border-top-color: #3b82f6; }
+    .summary-label { font-size: 9px; font-weight: 700; letter-spacing: .08em; color: #888; margin-bottom: .3rem; text-transform: uppercase; }
+    .summary-value { font-size: 22px; font-weight: 800; color: #0b0f19; }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
+    thead tr {
+      background: #0b0f19;
+      color: #fff;
+    }
+    thead th {
+      padding: .5rem .6rem;
+      text-align: left;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+    tbody tr:nth-child(even) { background: #f8f9fa; }
+    tbody tr:hover { background: #e8fdf8; }
+    tbody td {
+      padding: .45rem .6rem;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: .15rem .5rem;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .badge-active { background: #d1fae5; color: #065f46; }
+    .badge-done   { background: #f1f5f9; color: #64748b; }
+
+    /* Footer */
+    .report-footer {
+      margin-top: 2rem;
+      padding-top: .75rem;
+      border-top: 1px solid #ddd;
+      font-size: 10px;
+      color: #888;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    @media print {
+      body { padding: 1rem; }
+      @page { margin: 1.5cm; size: A4 landscape; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="report-header">
+    <div>
+      <h1>CCS Sit-in Monitoring — Session Report</h1>
+      <p class="report-meta">Generated: {{ generated }} &nbsp;|&nbsp; College of Computer Studies</p>
+    </div>
+    <div class="logo">⊙ CCS Sit-in Monitor</div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary-row">
+    <div class="summary-box">
+      <div class="summary-label">Total Sessions</div>
+      <div class="summary-value">{{ sessions|length }}</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">Active Now</div>
+      <div class="summary-value">{{ sessions|selectattr('status','eq','ACTIVE')|list|length }}</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">Completed</div>
+      <div class="summary-value">{{ sessions|selectattr('status','eq','DONE')|list|length }}</div>
+    </div>
+    <div class="summary-box">
+      <div class="summary-label">Total Students</div>
+      <div class="summary-value">{{ students|length }}</div>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Student Name</th>
+        <th>Student ID</th>
+        <th>Lab</th>
+        <th>Subject</th>
+        <th>Date</th>
+        <th>Time In</th>
+        <th>Time Out</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for s in sessions %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ s.student_name }}</td>
+        <td>{{ s.student_id }}</td>
+        <td>{{ s.lab }}</td>
+        <td>{{ s.subject }}</td>
+        <td>{{ s.date }}</td>
+        <td>{{ s.time_in }}</td>
+        <td>{{ s.time_out or '—' }}</td>
+        <td>
+          <span class="badge {{ 'badge-active' if s.status == 'ACTIVE' else 'badge-done' }}">
+            {{ s.status }}
+          </span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Footer -->
+  <div class="report-footer">
+    <span>CCS Sit-in Monitoring System — Confidential</span>
+    <span>Generated on {{ generated }}</span>
+  </div>
+
+  <script>
+    // Auto-open print dialog
+    window.onload = () => window.print();
+  </script>
+</body>
+</html>

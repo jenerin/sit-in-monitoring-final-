@@ -1,0 +1,18 @@
+[
+  {
+    "id": "2026-0001",
+    "name": "Carlos Paling",
+    "course": "BSIT",
+    "year": 4,
+    "email": "Paling@gmail.com",
+    "password": "112233",
+    "sessions_left": 29,
+    "reward_points": 10,
+    "sit_in_count": 1,
+    "active_session": false,
+    "current_lab": null,
+    "current_subject": null,
+    "login_time": null,
+    "avatar": "images/avatars/2026-0001.jpg"
+  }
+]

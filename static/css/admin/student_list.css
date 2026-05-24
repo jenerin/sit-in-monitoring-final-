@@ -1,0 +1,79 @@
+/* ═══════════════════════════════════════════════════════════
+   admin/student_list.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* Mini avatar in table */
+.sl-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0,242,195,.1);
+  color: var(--teal);
+  font-size: .7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,242,195,.2);
+  flex-shrink: 0;
+}
+
+.sl-avatar-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(0,242,195,.3);
+  flex-shrink: 0;
+}
+
+/* NOT ACTIVE badge */
+.badge-not-active {
+  background: rgba(148,163,184,.12);
+  color: var(--text-muted);
+  font-size: .65rem;
+  font-weight: 700;
+  padding: .2rem .6rem;
+  border-radius: 999px;
+  letter-spacing: .05em;
+}
+
+/* Delete button */
+.btn-delete {
+  background: rgba(239,68,68,.1);
+  color: #fca5a5;
+  border: 1px solid rgba(239,68,68,.25);
+  padding: .3rem .7rem;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+}
+.btn-delete:hover {
+  background: rgba(239,68,68,.25);
+  color: #fff;
+}
+
+/* View button */
+.btn-view {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .3rem .7rem;
+  background: rgba(13,148,136,.15);
+  color: #0d9488;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid rgba(13,148,136,.3);
+  transition: background .2s, color .2s;
+  white-space: nowrap;
+}
+.btn-view:hover {
+  background: #0d9488;
+  color: #fff;
+}

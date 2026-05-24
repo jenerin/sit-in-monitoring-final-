@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "student_id": "2021-00001",
+    "student_name": "Juan Dela Cruz",
+    "lab": "Lab 1",
+    "pc_number": 5,
+    "date": "2025-01-20",
+    "time_slot": "08:00-10:00",
+    "subject": "C Programming",
+    "status": "APPROVED"
+  },
+  {
+    "id": 2,
+    "student_id": "2023-00005",
+    "student_name": "Ana Reyes",
+    "lab": "Lab 3",
+    "pc_number": 12,
+    "date": "2025-01-21",
+    "time_slot": "10:00-12:00",
+    "subject": "Python",
+    "status": "APPROVED"
+  },
+  {
+    "id": 3,
+    "student_id": "2021-00001",
+    "student_name": "Jennelyn Abilong",
+    "lab": "Lab 1",
+    "pc_number": 2,
+    "date": "2026-05-04",
+    "time_slot": "09:30-11:30",
+    "subject": "research",
+    "status": "APPROVED"
+  },
+  {
+    "id": 4,
+    "student_id": "2021-00001",
+    "student_name": "Jennelyn Abilong",
+    "lab": "Lab 1",
+    "pc_number": 4,
+    "date": "2026-05-03",
+    "time_slot": "07:30-09:30",
+    "subject": "research",
+    "status": "REJECTED"
+  },
+  {
+    "id": 5,
+    "student_id": "2021-00001",
+    "student_name": "Jennelyn Abilong",
+    "lab": "Lab 1",
+    "pc_number": 3,
+    "date": "2026-05-03",
+    "time_slot": "07:30-09:30",
+    "subject": "research",
+    "status": "APPROVED"
+  },
+  {
+    "id": 6,
+    "student_id": "2021-00001",
+    "student_name": "Jennelyn Abilong",
+    "lab": "Lab 1",
+    "pc_number": 27,
+    "date": "2026-05-03",
+    "time_slot": "11:30-13:30",
+    "subject": "research",
+    "status": "APPROVED"
+  },
+  {
+    "id": 7,
+    "student_id": "2021-00001",
+    "student_name": "Jennelyn Abilong",
+    "lab": "Lab 1",
+    "pc_number": 2,
+    "date": "2026-05-03",
+    "time_slot": "07:30-09:30",
+    "subject": "research",
+    "status": "APPROVED"
+  },
+  {
+    "id": 8,
+    "student_id": "2026-0001",
+    "student_name": "Carlos Paling",
+    "lab": "Lab 1",
+    "pc_number": 26,
+    "date": "2026-05-03",
+    "time_slot": "07:30-09:30",
+    "subject": "research",
+    "status": "REJECTED"
+  },
+  {
+    "id": 9,
+    "student_id": "2026-0001",
+    "student_name": "Carlos Paling",
+    "lab": "Lab 1",
+    "pc_number": 2,
+    "date": "2026-05-17",
+    "time_slot": "07:30-09:30",
+    "subject": "research",
+    "status": "APPROVED"
+  }
+]

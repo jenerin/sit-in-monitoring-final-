@@ -1,0 +1,277 @@
+/* ── Admin Reservation Page ─────────────────────────────────── */
+
+/* PC Map Card */
+.pc-map-card {
+  margin-bottom: 1.5rem;
+}
+
+.pc-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.pc-map-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Legend */
+.pc-legend {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: .78rem;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+.pc-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.pc-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--text-muted);
+  font-size: .85rem;
+}
+
+.pc-counts strong {
+  color: var(--text);
+}
+
+.pc-bulk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.btn-bulk,
+.btn-selected,
+.btn-secondary {
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  color: var(--text);
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .18s ease;
+  font-size: .8rem;
+}
+
+.btn-bulk:hover,
+.btn-selected:hover,
+.btn-secondary:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+  transform: translateY(-1px);
+}
+
+.btn-selected {
+  min-width: 150px;
+}
+
+.btn-secondary {
+  background: transparent;
+}
+
+.pc-cell.selected {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, .18);
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  margin-right: .3rem;
+  vertical-align: middle;
+}
+
+.dot-available    { background: #00f2c3; }
+.dot-reserved     { background: #3b82f6; }
+.dot-unavailable  { background: #ef4444; }
+.dot-maintenance  { background: #f59e0b; }
+
+/* Lab Tabs */
+.lab-tabs {
+  display: flex;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid #1e2d45;
+  padding-bottom: .75rem;
+}
+
+.lab-tab {
+  background: transparent;
+  border: 1px solid #1e2d45;
+  color: var(--text-muted);
+  padding: .4rem 1.1rem;
+  border-radius: 8px;
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.lab-tab:hover {
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+.lab-tab.active {
+  background: rgba(0, 242, 195, .12);
+  border-color: var(--teal);
+  color: var(--teal);
+}
+
+/* PC Grid Panels */
+.pc-grid-panel {
+  display: none;
+}
+
+.pc-grid-panel.active {
+  display: block;
+}
+
+/* PC Grid */
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: .6rem;
+}
+
+/* PC Cell */
+.pc-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .2rem;
+  padding: .55rem .3rem .45rem;
+  border-radius: 10px;
+  border: 1.5px solid #1e2d45;
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s;
+  min-height: 72px;
+}
+
+.pc-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+}
+
+.pc-cell .pc-num {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.pc-cell .pc-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+/* Status colours */
+.pc-available    { background: rgba(0, 242, 195, .08); border-color: rgba(0, 242, 195, .35); }
+.pc-reserved     { background: rgba(59, 130, 246, .1); border-color: rgba(59, 130, 246, .4); }
+.pc-unavailable  { background: rgba(239, 68, 68, .1);  border-color: rgba(239, 68, 68, .4); }
+.pc-under_maintenance { background: rgba(245, 158, 11, .1); border-color: rgba(245, 158, 11, .4); }
+
+/* Dropdown inside PC cell */
+.pc-actions {
+  width: 100%;
+  margin-top: .25rem;
+}
+
+.pc-status-select {
+  width: 100%;
+  background: rgba(255,255,255,.05);
+  border: 1px solid #1e2d45;
+  color: var(--text);
+  font-size: .62rem;
+  padding: .2rem .25rem;
+  border-radius: 5px;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  text-align: center;
+}
+
+.pc-status-select:focus {
+  border-color: var(--teal);
+}
+
+/* Section title inside card */
+.section-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 1rem;
+}
+
+/* Action cell buttons */
+.action-cell {
+  display: flex;
+  gap: .4rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-approve {
+  background: rgba(0, 242, 195, .12);
+  color: var(--teal);
+  border: 1px solid rgba(0, 242, 195, .3);
+  padding: .3rem .75rem;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s;
+  white-space: nowrap;
+}
+
+.btn-approve:hover {
+  background: rgba(0, 242, 195, .22);
+}
+
+.btn-reject {
+  background: rgba(239, 68, 68, .1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, .3);
+  padding: .3rem .75rem;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background .15s;
+  white-space: nowrap;
+}
+
+.btn-reject:hover {
+  background: rgba(239, 68, 68, .2);
+}
+
+/* Rejected badge */
+.badge-rejected {
+  background: rgba(239, 68, 68, .12);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, .3);
+  padding: .25rem .65rem;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+}

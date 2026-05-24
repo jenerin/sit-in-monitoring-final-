@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block title %}Software Availability — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/software.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">MAIN</div>
+      <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+      <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+      <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+
+      <div class="nav-section-label">LAB</div>
+      <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+      <a href="{{ url_for('student_reservation') }}" class="nav-item" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item active" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+      <a href="{{ url_for('student_rules') }}" class="nav-item" id="nav-student-rules"><span class="nav-icon">📜</span> Lab Rules</a>
+
+      <div class="nav-section-label">COMMUNITY</div>
+      <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+      <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+      <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+    </nav>
+    <div class="sidebar-logout">
+      <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">Software Availability</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="res-card">
+        <div class="software-filter-row">
+          <div>
+            <h3 class="res-card-title">Available Software</h3>
+            <p class="subtext">Choose the software you want to install for the selected lab.</p>
+          </div>
+          <form method="get" class="software-filter-form">
+            <label for="labSelect">Filter by lab</label>
+            <select name="lab" id="labSelect" onchange="this.form.submit()">
+              {% for lab in labs %}
+              <option value="{{ lab }}" {% if lab == selected_lab %}selected{% endif %}>{{ lab }}</option>
+              {% endfor %}
+            </select>
+          </form>
+        </div>
+
+        {% if software_apps %}
+        <div class="res-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Version</th>
+                <th>Lab</th>
+                <th>Description</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for app in software_apps %}
+              <tr>
+                <td>{{ app.name }}</td>
+                <td>{{ app.category }}</td>
+                <td>{{ app.version }}</td>
+                <td>{{ app.lab or 'All Labs' }}</td>
+                <td>{{ app.description }}</td>
+                <td>
+                  <form method="POST" action="{{ url_for('student_software_install', app_id=app.id) }}">
+                    <input type="hidden" name="lab" value="{{ selected_lab }}" />
+                    <button type="submit" class="btn-save btn-sm">Install</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">No software entries available for this lab.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 2 has been rejected by the admin.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 2,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 2 has been rejected by the admin.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 3,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 2 has been approved.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 4,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 4 has been rejected by the admin.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 5,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 3 has been approved.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 6,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 27 has been approved.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 7,
+    "student_id": "2021-00001",
+    "message": "Your reservation for Lab 1 \u2014 PC 2 has been approved. Your sit-in session has started!",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 8,
+    "student_id": "2026-0001",
+    "message": "Your reservation for Lab 1 \u2014 PC 26 has been rejected by the admin.",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 9,
+    "student_id": "2021-00001",
+    "message": "Your sit-in session has been ended by the admin. You earned 10 reward points!",
+    "date": "2026-05-02",
+    "read": true
+  },
+  {
+    "id": 10,
+    "student_id": "2026-0001",
+    "message": "Your reservation for Lab 1 \u2014 PC 2 has been approved. Your sit-in session has started!",
+    "date": "2026-05-17",
+    "read": true
+  },
+  {
+    "id": 11,
+    "student_id": "2026-0001",
+    "message": "Your sit-in session has been marked as done. You earned 10 reward points!",
+    "date": "2026-05-17",
+    "read": true
+  }
+]

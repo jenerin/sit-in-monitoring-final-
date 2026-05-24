@@ -1,0 +1,23 @@
+/* ═══════════════════════════════════════════════════════════
+   admin/reports.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* PDF download button */
+.btn-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--teal);
+  color: #0b0f19;
+  font-weight: 700;
+  font-size: .88rem;
+  padding: .6rem 1.35rem;
+  border-radius: 9px;
+  transition: background .15s, box-shadow .15s;
+  box-shadow: 0 0 16px rgba(0,242,195,.2);
+  white-space: nowrap;
+}
+.btn-pdf:hover {
+  background: var(--teal-dim);
+  box-shadow: 0 0 24px rgba(0,242,195,.3);
+}

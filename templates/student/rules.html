@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Lab Rules — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+    <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+    <a href="{{ url_for('student_reservation') }}" class="nav-item" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+    <div class="nav-section-label">COMMUNITY</div>
+    <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+    <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+    <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">Lab Rules</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+        <h3 class="section-title">📜 CCS Laboratory Rules &amp; Regulations</h3>
+        <div class="rules-list">
+          <div class="rule-item"><span class="rule-num">1</span><p>Students must log in using their Student ID before using any workstation.</p></div>
+          <div class="rule-item"><span class="rule-num">2</span><p>Food and drinks are strictly prohibited inside the laboratory.</p></div>
+          <div class="rule-item"><span class="rule-num">3</span><p>Students must use the computers only for academic purposes.</p></div>
+          <div class="rule-item"><span class="rule-num">4</span><p>Downloading or installing unauthorized software is not allowed.</p></div>
+          <div class="rule-item"><span class="rule-num">5</span><p>Students must log out properly after each session.</p></div>
+          <div class="rule-item"><span class="rule-num">6</span><p>Noise must be kept to a minimum to maintain a conducive learning environment.</p></div>
+          <div class="rule-item"><span class="rule-num">7</span><p>Any damage to equipment must be reported immediately to the lab administrator.</p></div>
+          <div class="rule-item"><span class="rule-num">8</span><p>Students must follow the reservation schedule and vacate the workstation on time.</p></div>
+          <div class="rule-item"><span class="rule-num">9</span><p>Violation of these rules may result in suspension of lab privileges.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/dashboard.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/edit_profile.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+    <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+    <a href="{{ url_for('student_reservation') }}" class="nav-item" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+    <div class="nav-section-label">COMMUNITY</div>
+    <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+    <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+    <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">Edit Profile</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+
+        <!-- Avatar upload section -->
+        <div class="profile-avatar-section">
+          <div class="avatar-upload-wrap">
+            {% if student.avatar %}
+              <img src="{{ url_for('static', filename=student.avatar) }}"
+                   class="avatar-img" id="avatarPreview" alt="Profile photo" />
+            {% else %}
+              <div class="avatar-circle large" id="avatarInitials">{{ get_initials(student.name) }}</div>
+              <img src="" class="avatar-img" id="avatarPreview"
+                   style="display:none;" alt="Profile photo" />
+            {% endif %}
+            <label class="camera-btn" for="photoInput" title="Change photo">
+              📷
+            </label>
+          </div>
+          <div>
+            <h3>{{ student.name }}</h3>
+            <p>{{ student.id }}</p>
+          </div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="edit-form">
+          <!-- Hidden file input triggered by camera button -->
+          <input type="file" id="photoInput" name="photo"
+                 accept="image/png,image/jpeg,image/gif,image/webp"
+                 style="display:none;" />
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" name="name" value="{{ student.name }}" required />
+            </div>
+            <div class="form-group">
+              <label>Student ID</label>
+              <input type="text" value="{{ student.id }}" disabled />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Course</label>
+              <select name="course">
+                {% for c in ['BSCS','BSIT','BSIS','ACT'] %}
+                <option value="{{ c }}" {% if student.course == c %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Year Level</label>
+              <select name="year">
+                {% for y in [1,2,3,4] %}
+                <option value="{{ y }}" {% if student.year == y %}selected{% endif %}>
+                  {{ y }}{% if y == 1 %}st{% elif y == 2 %}nd{% elif y == 3 %}rd{% else %}th{% endif %} Year
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="email" value="{{ student.email or '' }}" />
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>New Password <small>(leave blank to keep current)</small></label>
+              <input type="password" name="new_password" placeholder="New password" />
+            </div>
+          </div>
+          <button type="submit" class="btn-save">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/student/edit_profile.js') }}"></script>
+{% endblock %}

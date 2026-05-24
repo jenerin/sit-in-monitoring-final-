@@ -1,0 +1,252 @@
+/* ═══════════════════════════════════════════════════════════
+   student/reservation.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Reservation Card ─────────────────────────────────────── */
+.res-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.res-card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+}
+
+.step-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #0b0f19;
+  font-size: .75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.lab-name-tag {
+  margin-left: auto;
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--teal);
+  background: rgba(0,242,195,.08);
+  border: 1px solid rgba(0,242,195,.2);
+  padding: .2rem .75rem;
+  border-radius: 999px;
+}
+
+/* ── Legend ───────────────────────────────────────────────── */
+.pc-legend {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .78rem;
+  color: var(--text-muted);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.ld-available   { background: var(--bg3); border: 1px solid var(--border); }
+.ld-reserved    { background: rgba(245,158,11,.25); border: 1px solid rgba(245,158,11,.5); }
+.ld-occupied    { background: rgba(239,68,68,.25);  border: 1px solid rgba(239,68,68,.5); }
+.ld-unavailable { background: rgba(239,68,68,.35);  border: 1px solid rgba(239,68,68,.6); }
+.ld-maintenance { background: rgba(245,158,11,.35); border: 1px solid rgba(245,158,11,.6); }
+.ld-selected    { background: rgba(0,242,195,.3);   border: 1px solid var(--teal); }
+
+/* ── Instructor Desk ──────────────────────────────────────── */
+.instructor-desk {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: .6rem 1.5rem;
+  background: rgba(59,130,246,.08);
+  border: 1px dashed rgba(59,130,246,.35);
+  border-radius: 10px;
+  color: var(--blue);
+  font-size: .82rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  max-width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── PC Grid ──────────────────────────────────────────────── */
+.pc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: .7rem;
+  margin-bottom: 1.2rem;
+}
+
+.pc-cell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .25rem;
+  padding: .6rem .4rem .5rem;
+  border-radius: 10px;
+  border: 1.5px solid #1e2d45;
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s;
+  min-height: 74px;
+  background: transparent;
+}
+
+.pc-cell:hover:not(.pc-reserved):not(.pc-occupied):not(.pc-unavailable):not(.pc-maintenance) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,.3);
+}
+
+.pc-cell .pc-num {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  line-height: 1;
+}
+
+.pc-cell .pc-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.pc-cell .pc-status {
+  margin-top: .25rem;
+  font-size: .72rem;
+  text-transform: none;
+  color: var(--text-muted);
+  letter-spacing: .03em;
+  text-align: center;
+}
+
+.pc-cell.pc-selected {
+  border-color: var(--teal) !important;
+  background: rgba(0,242,195,.12) !important;
+  box-shadow: 0 0 0 3px rgba(0,242,195,.2), 0 6px 22px rgba(0,0,0,.18);
+}
+
+/* States */
+..pc-available {
+  border-color: rgba(0,242,195,.35);
+  background: rgba(0,242,195,.08);
+}
+
+.pc-reserved {
+  border-color: rgba(59,130,246,.4);
+  background: rgba(59,130,246,.1);
+  cursor: not-allowed;
+  opacity: .85;
+}
+.pc-reserved .pc-icon  { filter: grayscale(.4); }
+
+.pc-occupied {
+  border-color: rgba(239,68,68,.4);
+  background: rgba(239,68,68,.1);
+  cursor: not-allowed;
+  opacity: .85;
+}
+.pc-occupied .pc-icon  { filter: grayscale(.4); }
+
+/* Admin-set: unavailable */
+.pc-unavailable {
+  border-color: rgba(239,68,68,.4);
+  background: rgba(239,68,68,.1);
+  cursor: not-allowed;
+  opacity: .8;
+}
+.pc-unavailable .pc-icon  { filter: grayscale(.6); }
+
+/* Admin-set: under maintenance */
+.pc-maintenance,
+.pc-under_maintenance {
+  border-color: rgba(245,158,11,.4);
+  background: rgba(245,158,11,.1);
+  cursor: not-allowed;
+  opacity: .8;
+}
+.pc-maintenance .pc-icon,
+.pc-under_maintenance .pc-icon  { filter: grayscale(.4) sepia(.3); }
+
+/* Admin-set: reserved (not student-bookable) */
+.pc-admin_reserved {
+  border-color: rgba(129,140,248,.4);
+  background: rgba(99,102,241,.1);
+  cursor: not-allowed;
+  opacity: .8;
+}
+.pc-admin_reserved .pc-icon  { filter: grayscale(.4); }
+
+/* ── Selected Info Bar ────────────────────────────────────── */
+.selected-info {
+  text-align: center;
+  font-size: .85rem;
+  color: var(--text-muted);
+  padding: .65rem 1rem;
+  background: var(--bg3);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: all .2s;
+}
+.selected-info.has-selection {
+  color: var(--teal);
+  border-color: rgba(0,242,195,.3);
+  background: rgba(0,242,195,.05);
+  font-weight: 600;
+}
+
+/* ── Submit Row ───────────────────────────────────────────── */
+.res-submit-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: .5rem;
+}
+
+.btn-save:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.res-submit-hint {
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+
+/* ── Table wrap ───────────────────────────────────────────── */
+.res-table-wrap {
+  overflow-x: auto;
+}
+
+.pc-num-badge {
+  display: inline-block;
+  background: rgba(0,242,195,.08);
+  color: var(--teal);
+  border: 1px solid rgba(0,242,195,.2);
+  padding: .15rem .55rem;
+  border-radius: 6px;
+  font-size: .78rem;
+  font-weight: 700;
+}

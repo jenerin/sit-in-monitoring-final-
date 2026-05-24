@@ -1,0 +1,58 @@
+/* ═══════════════════════════════════════════════════════════
+   admin/rewards.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* Give points form — 3-col row */
+.give-points-form .form-row {
+  grid-template-columns: 1fr 160px 1fr;
+  margin-bottom: .75rem;
+}
+
+/* Mini avatar in table */
+.lb-mini-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(0,242,195,.1);
+  color: var(--teal);
+  font-size: .7rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,242,195,.2);
+  flex-shrink: 0;
+}
+
+/* Quick add inline input */
+.quick-pts-input {
+  width: 58px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: .3rem .5rem;
+  color: var(--text);
+  font-size: .82rem;
+  text-align: center;
+  outline: none;
+}
+.quick-pts-input:focus { border-color: var(--teal); }
+
+/* Quick add button */
+.btn-quick-add {
+  background: var(--teal);
+  color: #0b0f19;
+  font-weight: 800;
+  font-size: .9rem;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.btn-quick-add:hover { background: var(--teal-dim); }

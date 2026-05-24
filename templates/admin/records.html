@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Records — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">Sit-in Records</h2>
+        <p class="page-sub">All historical sit-in sessions</p>
+        <a href="{{ url_for('admin_records_download') }}" class="btn-end" style="margin-top:.5rem;display:inline-block;text-decoration:none;">⬇ Download CSV</a>
+        <a href="{{ url_for('admin_records_pdf') }}" class="btn-end" style="margin-top:.5rem;display:inline-block;text-decoration:none;margin-left:.75rem;">⬇ Download PDF</a>
+      </div>
+
+      <div class="page-card">
+        <table class="data-table">
+          <thead>
+            <tr><th>#</th><th>Student</th><th>ID</th><th>Lab</th><th>Subject</th><th>Date</th><th>Time In</th><th>Time Out</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            {% for s in sessions %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ s.student_name }}</td>
+              <td>{{ s.student_id }}</td>
+              <td>{{ s.lab }}</td>
+              <td>{{ s.subject }}</td>
+              <td>{{ s.date }}</td>
+              <td>{{ s.time_in }}</td>
+              <td>{{ s.time_out or '—' }}</td>
+              <td><span class="badge-status {{ 'badge-active' if s.status == 'ACTIVE' else 'badge-done' }}">{{ s.status }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}PC Reservation — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/admin_reservation.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">PC Reservations</h2>
+        <p class="page-sub">Manage student PC reservations and lab availability</p>
+      </div>
+
+      <!-- PC STATUS MAP -->
+      <div class="page-card pc-map-card">
+        <div class="pc-map-header">
+          <h3 class="pc-map-title">🖥️ Lab PC Status</h3>
+          <div class="pc-legend">
+            <span class="legend-dot dot-available"></span> Available
+            <span class="legend-dot dot-reserved"></span> Reserved
+            <span class="legend-dot dot-unavailable"></span> Unavailable
+            <span class="legend-dot dot-maintenance"></span> Under Maintenance
+          </div>
+        </div>
+
+        <div class="pc-controls">
+          <div class="pc-counts">
+            <span>Available: <strong class="count-available">0</strong></span>
+            <span>Reserved: <strong class="count-reserved">0</strong></span>
+            <span>Unavailable: <strong class="count-unavailable">0</strong></span>
+            <span>Maintenance: <strong class="count-maintenance">0</strong></span>
+            <span>Selected: <strong class="count-selected">0</strong></span>
+          </div>
+          <div class="pc-bulk-actions">
+            <button type="button" class="btn-bulk" data-bulk="available">All Available</button>
+            <button type="button" class="btn-bulk" data-bulk="unavailable">All Unavailable</button>
+            <button type="button" class="btn-bulk" data-bulk="under_maintenance">All Maintenance</button>
+            <button type="button" class="btn-bulk" data-bulk="reserved">All Reserved</button>
+            <button type="button" class="btn-secondary" id="clear-selection">Clear Selection</button>
+          </div>
+        </div>
+
+        <div class="lab-tabs">
+          {% for lab in labs %}
+          <button class="lab-tab {% if loop.first %}active{% endif %}" data-lab="{{ lab }}">{{ lab }}</button>
+          {% endfor %}
+        </div>
+
+        {% for lab in labs %}
+        <div class="pc-grid-panel {% if loop.first %}active{% endif %}" id="panel-{{ lab | replace(' ', '-') }}">
+          <div class="pc-grid">
+            {% for i in range(1, 31) %}
+            {% set status = pc_status[lab][i|string] %}
+            <div class="pc-cell pc-{{ status }}" data-lab="{{ lab }}" data-pc="{{ i }}" title="PC {{ i }} — {{ status }}">
+              <span class="pc-num">{{ i }}</span>
+              <span class="pc-icon">🖥️</span>
+              <div class="pc-actions">
+                <select class="pc-status-select" data-lab="{{ lab }}" data-pc="{{ i }}">
+                  <option value="available" {% if status == 'available' %}selected{% endif %}>Available</option>
+                  <option value="unavailable" {% if status == 'unavailable' %}selected{% endif %}>Unavailable</option>
+                  <option value="under_maintenance" {% if status == 'under_maintenance' %}selected{% endif %}>Maintenance</option>
+                  <option value="reserved" {% if status == 'reserved' %}selected{% endif %}>Reserved</option>
+                </select>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- RESERVATIONS TABLE -->
+      <div class="page-card">
+        <h3 class="section-title">Reservation Requests</h3>
+        {% if reservations %}
+        <table class="data-table">
+          <thead>
+            <tr><th>Student</th><th>Lab</th><th>PC</th><th>Date</th><th>Time Slot</th><th>Subject</th><th>Status</th><th>Actions</th></tr>
+          </thead>
+          <tbody>
+            {% for r in reservations %}
+            <tr>
+              <td>{{ r.student_name }}</td>
+              <td>{{ r.lab }}</td>
+              <td>PC {{ r.pc_number }}</td>
+              <td>{{ r.date }}</td>
+              <td>{{ r.time_slot }}</td>
+              <td>{{ r.subject }}</td>
+              <td>
+                <span class="badge-status
+                  {% if r.status == 'APPROVED' %}badge-active
+                  {% elif r.status == 'REJECTED' %}badge-rejected
+                  {% else %}badge-pending{% endif %}">
+                  {{ r.status }}
+                </span>
+              </td>
+              <td class="action-cell">
+                {% if r.status == 'PENDING' %}
+                <a href="{{ url_for('admin_approve_reservation', res_id=r.id) }}" class="btn-approve" onclick="return confirm('Approve this reservation?')">Approve</a>
+                <a href="{{ url_for('admin_reject_reservation', res_id=r.id) }}" class="btn-reject" onclick="return confirm('Reject this reservation?')">Reject</a>
+                {% else %}
+                <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <p class="empty-msg">No reservations yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admin/admin_reservation.js') }}"></script>
+{% endblock %}

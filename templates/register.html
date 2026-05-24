@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Register — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}" />
+{% endblock %}
+
+{% block content %}
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-logo">
+    <span class="logo-icon">⊙</span>
+    <span class="logo-text">CCS Sit-in Monitor</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="{{ url_for('landing') }}">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="{{ url_for('login') }}">Login</a></li>
+    <li><a href="{{ url_for('register') }}" class="btn-register active">Register</a></li>
+  </ul>
+</nav>
+
+<!-- AUTH WRAPPER -->
+<div class="auth-wrapper">
+  <div class="auth-card auth-card-wide">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <span class="logo-icon">⊙</span>
+      <span class="logo-text">CCS Sit-in Monitor</span>
+    </div>
+
+    <h2 class="auth-title">Create Account</h2>
+    <p class="auth-sub">Register as a CCS student to get started</p>
+
+    <form method="POST" action="{{ url_for('register') }}" class="auth-form">
+      <!-- Row 1: ID + Name -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="student_id">Student ID</label>
+          <input
+            type="text"
+            id="student_id"
+            name="student_id"
+            placeholder="e.g. 2021-00001"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Juan Dela Cruz"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Row 2: Course + Year -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="course">Course</label>
+          <select id="course" name="course" required>
+            <option value="" disabled selected>Select Course</option>
+            <option value="BSCS">BSCS — Bachelor of Science in Computer Science</option>
+            <option value="BSIT">BSIT — Bachelor of Science in Information Technology</option>
+            <option value="BSIS">BSIS — Bachelor of Science in Information Systems</option>
+            <option value="ACT">ACT — Associate in Computer Technology</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="year">Year Level</label>
+          <select id="year" name="year" required>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="juan@ccs.edu.ph"
+          required
+        />
+      </div>
+
+      <!-- Row 3: Passwords -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            placeholder="Repeat your password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-auth">Create Account</button>
+    </form>
+
+    <p class="auth-switch">
+      Already have an account? <a href="{{ url_for('login') }}">Login here</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

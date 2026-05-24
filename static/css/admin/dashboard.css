@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════
+   admin/dashboard.css
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Widgets Row ──────────────────────────────────────────── */
+.widgets-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 1rem;
+}
+@media (max-width: 860px) {
+  .widgets-row { grid-template-columns: 1fr; }
+}
+
+.widget {
+  margin-bottom: 1rem;
+}
+
+/* ── Widget Card ──────────────────────────────────────────── */
+.widget {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.widget-header {
+  padding: .9rem 1.35rem;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+  font-size: .88rem;
+  color: var(--text-muted);
+}
+
+/* ── Quick Actions ────────────────────────────────────────── */
+.quick-actions {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1rem;
+}
+
+.qa-btn {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .8rem 1.1rem;
+  border-radius: 9px;
+  background: var(--bg3);
+  color: var(--text-muted);
+  font-size: .88rem;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+}
+.qa-btn:hover {
+  background: var(--border);
+  color: var(--text);
+}
+
+.qa-primary {
+  background: var(--teal) !important;
+  color: #0b0f19 !important;
+  font-weight: 700 !important;
+}
+.qa-primary:hover {
+  background: var(--teal-dim) !important;
+}
+
+/* ── Recent Sit-ins ───────────────────────────────────────── */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding: .75rem;
+}
+
+.recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .7rem .85rem;
+  border-radius: 9px;
+  background: var(--bg3);
+  transition: background .15s;
+}
+.recent-item:hover { background: rgba(0,242,195,.04); }
+
+.recent-left {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+.recent-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,242,195,.1);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: .78rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0,242,195,.2);
+  flex-shrink: 0;
+}
+
+.recent-name { font-weight: 600; font-size: .88rem; }
+.recent-meta { font-size: .74rem; color: var(--text-muted); margin-top: .1rem; }
+
+/* ── Pending Reservation Action Buttons ──────────────────── */
+.btn-approve {
+  display: inline-block;
+  padding: .35rem .8rem;
+  border-radius: 8px;
+  font-size: .8rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: rgba(0, 242, 195, .12);
+  color: var(--teal);
+  border: 1px solid rgba(0, 242, 195, .25);
+  transition: background .15s;
+}
+.btn-approve:hover { background: rgba(0, 242, 195, .22); }
+
+.btn-reject {
+  display: inline-block;
+  padding: .35rem .8rem;
+  border-radius: 8px;
+  font-size: .8rem;
+  font-weight: 600;
+  text-decoration: none;
+  background: rgba(239, 68, 68, .1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, .25);
+  transition: background .15s;
+}
+.btn-reject:hover { background: rgba(239, 68, 68, .2); }
+
+.feedback-snippet {
+  margin-top: 0.65rem;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.recent-item.feedback-item {
+  align-items: flex-start;
+}

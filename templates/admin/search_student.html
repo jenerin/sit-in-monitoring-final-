@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Search Student — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">Search Student</h2>
+        <p class="page-sub">Find a student by name or ID</p>
+      </div>
+
+      <div class="page-card">
+        <form method="POST" class="search-form">
+          <input type="text" name="query" value="{{ query }}" placeholder="Enter student name or ID..." class="search-input" />
+          <button type="submit" class="btn-save">Search</button>
+        </form>
+
+        {% if result is not none %}
+          {% if result %}
+          <table class="data-table" style="margin-top:1.5rem;">
+            <thead>
+              <tr><th>ID</th><th>Name</th><th>Course</th><th>Year</th><th>Sessions Left</th><th>Points</th><th>Active</th></tr>
+            </thead>
+            <tbody>
+              {% for s in result %}
+              <tr>
+                <td>{{ s.id }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.course }}</td>
+                <td>{{ s.year }}</td>
+                <td>{{ s.sessions_left }}</td>
+                <td>{{ s.reward_points }}</td>
+                <td><span class="badge-status {{ 'badge-active' if s.active_session else 'badge-done' }}">{{ 'YES' if s.active_session else 'NO' }}</span></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          {% else %}
+          <p class="empty-msg" style="margin-top:1rem;">No students found for "{{ query }}".</p>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "Visual Studio Code",
+    "category": "Development",
+    "version": "1.85.0",
+    "lab": "All Labs",
+    "description": "Code editor for development",
+    "installed": true
+  },
+  {
+    "id": 2,
+    "name": "Adobe Photoshop",
+    "category": "Design",
+    "version": "2024",
+    "lab": "Lab 1, Lab 2",
+    "description": "Image editing software",
+    "installed": true
+  },
+  {
+    "id": 3,
+    "name": "Microsoft Office",
+    "category": "Productivity",
+    "version": "2021",
+    "lab": "All Labs",
+    "description": "Office suite (Word, Excel, PowerPoint)",
+    "installed": true
+  },
+  {
+    "id": 4,
+    "name": "Blender",
+    "category": "3D Modeling",
+    "version": "4.0",
+    "lab": "Lab 3",
+    "description": "3D creation suite",
+    "installed": true
+  }
+]

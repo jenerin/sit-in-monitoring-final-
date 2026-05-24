@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block title %}Student List — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/student_list.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">Student List</h2>
+        <p class="page-sub">All registered students — {{ students|length }} total</p>
+      </div>
+
+      <div class="page-card">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Year</th>
+              <th>Sessions Left</th>
+              <th>Points</th>
+              <th>Sit-ins</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in students %}
+            <tr>
+              <td style="font-size:.8rem;color:var(--text-muted)">{{ s.id }}</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:.6rem;">
+                  {% if s.avatar %}
+                    <img src="{{ url_for('static', filename=s.avatar) }}"
+                         class="sl-avatar-img" alt="{{ s.name }}" />
+                  {% else %}
+                    <div class="sl-avatar">{{ get_initials(s.name) }}</div>
+                  {% endif %}
+                  <span>{{ s.name }}</span>
+                </div>
+              </td>
+              <td>{{ s.course }}</td>
+              <td>{{ s.year }}</td>
+              <td>{{ s.sessions_left }}</td>
+              <td><strong style="color:var(--teal)">{{ s.reward_points }}</strong></td>
+              <td>{{ s.sit_in_count }}</td>
+              <td>
+                <span class="badge-status {{ 'badge-active' if s.active_session else 'badge-not-active' }}">
+                  {{ 'ACTIVE' if s.active_session else 'NOT ACTIVE' }}
+                </span>
+              </td>
+              <td>
+                <div style="display:flex;gap:.4rem;align-items:center;">
+                  <a href="javascript:void(0)"
+                     class="btn-view"
+                     title="View student info"
+                     data-id="{{ s.id }}"
+                     data-name="{{ s.name }}"
+                     data-course="{{ s.course }}"
+                     data-year="{{ s.year }}"
+                     data-email="{{ s.email or '' }}"
+                     data-sessions="{{ s.sessions_left }}"
+                     data-points="{{ s.reward_points }}"
+                     data-sitins="{{ s.sit_in_count }}"
+                     data-active="{{ 'true' if s.active_session else 'false' }}"
+                     data-lab="{{ s.current_lab or '' }}"
+                     data-subject="{{ s.current_subject or '' }}"
+                     onclick="openStudentModalFromData(this); return false;">👁 View</a>
+                  <form method="POST"
+                        action="{{ url_for('admin_delete_student', student_id=s.id) }}"
+                        onsubmit="return confirm('Delete {{ s.name }}? This cannot be undone.')"
+                        style="display:inline;">
+                    <button type="submit" class="btn-delete">🗑 Delete</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openStudentModal(id, name, course, year, email, sessionsLeft, points, sitins, active, lab, subject) {
+  document.getElementById('sm-id').textContent = id;
+  document.getElementById('sm-name').textContent = name;
+  document.getElementById('sm-course').textContent = course;
+  document.getElementById('sm-year').textContent = 'Year ' + year;
+  document.getElementById('sm-email').textContent = email || '—';
+  document.getElementById('sm-sessions').textContent = sessionsLeft;
+  document.getElementById('sm-points').textContent = points;
+  document.getElementById('sm-sitins').textContent = sitins;
+  document.getElementById('sm-status').textContent = active ? 'ACTIVE' : 'NOT ACTIVE';
+  document.getElementById('sm-status').className = active ? 'badge-status badge-active' : 'badge-status badge-not-active';
+  document.getElementById('sm-lab').textContent = active ? (lab + ' — ' + subject) : '—';
+  document.getElementById('sm-student-id').value = id;
+  document.getElementById('student-modal').style.display = 'flex';
+}
+function closeStudentModal() {
+  document.getElementById('student-modal').style.display = 'none';
+}
+function openStudentModalFromData(el) {
+  const id = el.dataset.id;
+  const name = el.dataset.name;
+  const course = el.dataset.course;
+  const year = el.dataset.year;
+  const email = el.dataset.email;
+  const sessions = el.dataset.sessions;
+  const points = el.dataset.points;
+  const sitins = el.dataset.sitins;
+  const active = el.dataset.active === 'true';
+  const lab = el.dataset.lab;
+  const subject = el.dataset.subject;
+  openStudentModal(id, name, course, year, email, sessions, points, sitins, active, lab, subject);
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeStudentModal();
+});
+
+// Initialize reset button handler
+function initResetButton() {
+  const btn = document.getElementById('resetBtn');
+  if (!btn) return;
+  
+  btn.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const studentId = document.getElementById('sm-student-id').value;
+    if (!studentId) {
+      alert('No student ID found');
+      return;
+    }
+    
+    if (!confirm('Reset sessions to 30 for this student?')) {
+      return;
+    }
+    
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    btn.textContent = '⟳ Resetting...';
+    
+    fetch(`/admin/student/reset-sessions/${studentId}`, { 
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.text();
+      })
+      .then(() => {
+        alert('Sessions reset successfully!');
+        closeStudentModal();
+        location.reload();
+      })
+      .catch(err => {
+        console.error('Reset error:', err);
+        alert('Error resetting sessions: ' + err.message);
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = '↻ Reset Sessions to 30';
+      });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initResetButton);
+initResetButton();
+</script>
+
+<!-- Student Info Modal -->
+<div id="student-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:1001;align-items:center;justify-content:center;">
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:2rem;min-width:340px;max-width:480px;width:90%;box-shadow:0 12px 48px rgba(0,0,0,.4);position:relative;color:var(--text-primary);">
+    <button onclick="closeStudentModal()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-primary);">✕</button>
+    <h3 style="margin:0 0 1.2rem;font-size:1.1rem;color:var(--text-primary);">Student Information</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem .5rem;font-size:.9rem;margin-bottom:1.5rem;">
+      <div style="color:var(--text-muted);">Student ID</div><div id="sm-id" style="font-weight:600;color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Full Name</div><div id="sm-name" style="font-weight:600;color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Course</div><div id="sm-course" style="color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Year Level</div><div id="sm-year" style="color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Email</div><div id="sm-email" style="color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Sessions Left</div><div id="sm-sessions" style="font-weight:600;color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Reward Points</div><div id="sm-points" style="color:var(--teal);font-weight:700;"></div>
+      <div style="color:var(--text-muted);">Total Sit-ins</div><div id="sm-sitins" style="color:var(--text-primary);"></div>
+      <div style="color:var(--text-muted);">Status</div><div><span id="sm-status"></span></div>
+      <div style="color:var(--text-muted);">Current Lab</div><div id="sm-lab" style="color:var(--text-primary);"></div>
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:1.5rem;">
+      <input type="hidden" id="sm-student-id" name="student_id" />
+      <button type="button" id="resetBtn" style="flex:1;padding:.85rem 1rem;background:var(--teal);color:#0b0f19;border:none;border-radius:8px;cursor:pointer;font-weight:700;font-size:.9rem;transition:all .2s;box-shadow:0 2px 8px rgba(0,242,195,.3);">
+        ↻ Reset Sessions to 30
+      </button>
+      <button type="button" onclick="closeStudentModal()" style="flex:1;padding:.85rem 1rem;background:var(--bg3);color:var(--text-primary);border:1px solid var(--border);border-radius:8px;cursor:pointer;font-weight:600;font-size:.9rem;transition:all .2s;">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}

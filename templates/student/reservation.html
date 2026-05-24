@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{% block title %}Reserve PC — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/reservation.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">MAIN</div>
+      <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+      <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+      <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+      
+      <div class="nav-section-label">LAB</div>
+      <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+      <a href="{{ url_for('student_reservation') }}" class="nav-item active" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+      <a href="{{ url_for('student_rules') }}" class="nav-item" id="nav-student-rules"><span class="nav-icon">📜</span> Lab Rules</a>
+      
+      <div class="nav-section-label">COMMUNITY</div>
+      <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+      <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+      <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+    </nav>
+    <div class="sidebar-logout">
+      <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">Reserve PC</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <form method="POST" id="reservationForm">
+
+        <div class="res-card">
+          <h3 class="res-card-title">
+            <span class="step-badge">1</span> Select Lab &amp; Schedule
+          </h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Lab</label>
+              <select name="lab" id="labSelect" required>
+                <option value="Lab 1">Lab 1 — 30 PCs</option>
+                <option value="Lab 2">Lab 2 — 25 PCs</option>
+                <option value="Lab 3">Lab 3 — 20 PCs</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" name="date" id="dateInput" required />
+            </div>
+            <div class="form-group">
+              <label>Time Slot</label>
+              <select name="time_slot" id="timeSlot" required>
+                <option value="07:30-09:30">07:30 – 09:30</option>
+                <option value="09:30-11:30">09:30 – 11:30</option>
+                <option value="11:30-13:30">11:30 – 13:30</option>
+                <option value="13:30-15:30">13:30 – 15:30</option>
+                <option value="15:30-17:30">15:30 – 17:30</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Subject / Purpose</label>
+              <input type="text" name="subject" id="subjectInput"
+                     placeholder="e.g. C Programming" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="res-card" id="pcMapCard">
+          <h3 class="res-card-title">
+            <span class="step-badge">2</span>
+            Choose a PC
+            <span class="lab-name-tag" id="labNameTag">Lab 1</span>
+          </h3>
+
+          <div class="pc-legend">
+            <span class="legend-item"><span class="legend-dot ld-available"></span> Available</span>
+            <span class="legend-item"><span class="legend-dot ld-reserved"></span> Reserved</span>
+            <span class="legend-item"><span class="legend-dot ld-occupied"></span> Occupied</span>
+            <span class="legend-item"><span class="legend-dot ld-unavailable"></span> Unavailable</span>
+            <span class="legend-item"><span class="legend-dot ld-maintenance"></span> Maintenance</span>
+            <span class="legend-item"><span class="legend-dot ld-selected"></span> Your Pick</span>
+          </div>
+
+          <div class="instructor-desk">
+            <span>🖥️ Instructor's Desk</span>
+          </div>
+
+          <div class="pc-grid" id="pcGrid"></div>
+
+          <div class="selected-info" id="selectedInfo">
+            No PC selected — click one above to choose.
+          </div>
+
+          <input type="hidden" name="pc_number" id="pcNumberInput" value="" />
+        </div>
+
+        <div class="res-submit-row">
+          <button type="submit" class="btn-save" id="submitBtn" disabled>
+            Confirm Reservation
+          </button>
+        </div>
+
+      </form>
+
+      <div class="res-card" style="margin-top:1.75rem;">
+        <h3 class="res-card-title">My Reservations</h3>
+        {% if reservations %}
+        <div class="res-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Lab</th>
+                <th>PC</th>
+                <th>Date</th>
+                <th>Time Slot</th>
+                <th>Subject</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in reservations %}
+              <tr>
+                <td>{{ r.lab }}</td>
+                <td>
+                  <span class="pc-num-badge">PC {{ r.pc_number }}</span>
+                </td>
+                <td>{{ r.date }}</td>
+                <td>{{ r.time_slot }}</td>
+                <td>{{ r.subject }}</td>
+                <td>
+                  <span class="badge-status
+                    {% if r.status == 'APPROVED' %}badge-active
+                    {% elif r.status == 'PENDING' %}badge-pending
+                    {% else %}badge-done{% endif %}">
+                    {{ r.status }}
+                  </span>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">No reservations yet.</p>
+        {% endif %}
+      </div>
+
+    </div></div></div><div id="reservation-data-container" style="display: none;">
+  {% if all_reservations %}
+    {% for r in all_reservations %}
+      <span class="res-row" 
+            data-id="{{ r.id }}" 
+            data-student-id="{{ r.student_id }}" 
+            data-lab="{{ r.lab or 'Lab 1' }}"
+            data-pc="{{ r.pc_number }}" 
+            data-date="{{ r.date }}"
+            data-slot="{{ r.time_slot }}"
+            data-status="{{ r.status }}">
+      </span>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<div id="pc-status-container" style="display: none;">
+  {% if pc_status %}
+    {% for lab_key, pcs in pc_status.items() %}
+      {% for pc_key, status_val in pcs.items() %}
+        <span class="pc-row" 
+              data-lab="{{ lab_key }}" 
+              data-pc="{{ pc_key }}" 
+              data-status="{{ status_val }}">
+        </span>
+      {% endfor %}
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  window.RESERVATIONS = [];
+  document.querySelectorAll('#reservation-data-container .res-row').forEach(el => {
+      window.RESERVATIONS.push({
+          id: el.getAttribute('data-id'),
+          student_id: el.getAttribute('data-student-id'),
+          lab: el.getAttribute('data-lab'),
+          pc_number: parseInt(el.getAttribute('data-pc')),
+          date: el.getAttribute('data-date'),
+          time_slot: el.getAttribute('data-slot'),
+          status: el.getAttribute('data-status')
+      });
+  });
+
+  window.PC_STATUS = {
+      'Lab 1': {},
+      'Lab 2': {},
+      'Lab 3': {}
+  };
+
+  document.querySelectorAll('#pc-status-container .pc-row').forEach(el => {
+      const targetLab = el.getAttribute('data-lab');
+      const rawPc = el.getAttribute('data-pc');
+      const rawStatus = el.getAttribute('data-status') || 'available';
+
+      let normalizedStatus = rawStatus.toLowerCase().replace(' ', '_'); 
+
+      const pcNumString = String(rawPc.replace(/\D/g, ''));
+
+      if (window.PC_STATUS[targetLab]) {
+          window.PC_STATUS[targetLab][pcNumString] = normalizedStatus;
+      }
+  });
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/student/reservation.js') }}"></script>
+{% endblock %}

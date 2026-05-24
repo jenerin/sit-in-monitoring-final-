@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}Student Testimonials — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/testimonials.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">Student Testimonials</h2>
+        
+      </div>
+
+      <!-- PENDING TESTIMONIALS -->
+      {% if pending_testimonials %}
+      <div class="page-card">
+        <h3 class="section-title">◄ Pending Approval ({{ pending_testimonials|length }})</h3>
+        <div class="testimonials-list">
+          {% for t in pending_testimonials %}
+          <div class="testimonial-item pending">
+            <div class="testimonial-header">
+              <span class="testimonial-name">{{ t.student_name }}</span>
+              <span class="testimonial-course">{{ t.course }}</span>
+              <span class="testimonial-id">{{ t.student_id }}</span>
+              <span class="testimonial-date">{{ t.date }}</span>
+            </div>
+            <div class="testimonial-body">{{ t.testimonial }}</div>
+            <div class="testimonial-actions">
+              <form method="POST" action="{{ url_for('admin_testimonials') }}" style="display:inline;">
+                <input type="hidden" name="testimonial_id" value="{{ t.id }}" />
+                <input type="hidden" name="action" value="approve" />
+                <button type="submit" class="btn-approve" onclick="return confirm('Approve this testimonial?')">✓ Approve</button>
+              </form>
+              <form method="POST" action="{{ url_for('admin_testimonials') }}" style="display:inline;">
+                <input type="hidden" name="testimonial_id" value="{{ t.id }}" />
+                <input type="hidden" name="action" value="reject" />
+                <button type="submit" class="btn-reject" onclick="return confirm('Reject this testimonial?')">✗ Reject</button>
+              </form>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- APPROVED TESTIMONIALS -->
+      <div class="page-card" style="margin-top:1.5rem;">
+        <h3 class="section-title">◄ Approved Testimonials ({{ approved_testimonials|length }})</h3>
+        <div class="testimonials-list">
+          {% for t in approved_testimonials %}
+          <div class="testimonial-item approved">
+            <div class="testimonial-header">
+              <span class="testimonial-name">{{ t.student_name }}</span>
+              <span class="testimonial-course">{{ t.course }}</span>
+              <span class="testimonial-id">{{ t.student_id }}</span>
+              <span class="testimonial-date">{{ t.date }}</span>
+            </div>
+            <div class="testimonial-body">{{ t.testimonial }}</div>
+            <div class="testimonial-actions">
+              <form method="POST" action="{{ url_for('admin_testimonials') }}" style="display:inline;">
+                <input type="hidden" name="testimonial_id" value="{{ t.id }}" />
+                <input type="hidden" name="action" value="delete" />
+                <button type="submit" class="btn-delete" onclick="return confirm('Delete this testimonial?')">🗑 Delete</button>
+              </form>
+            </div>
+          </div>
+          {% else %}
+          <p class="empty-msg">No approved testimonials yet.</p>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

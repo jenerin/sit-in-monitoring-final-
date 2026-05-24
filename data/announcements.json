@@ -1,0 +1,26 @@
+[
+  {
+    "id": 4,
+    "title": "hello",
+    "body": "some PCs is under maintainace",
+    "date": "2026-05-02"
+  },
+  {
+    "id": 1,
+    "title": "Welcome to CCS Lab Monitoring System",
+    "body": "The new sit-in monitoring system is now live. Please register and explore the features.",
+    "date": "2025-01-18"
+  },
+  {
+    "id": 2,
+    "title": "Lab Schedule Update",
+    "body": "Lab 3 will be under maintenance this Friday. Please use Lab 1 or Lab 2.",
+    "date": "2025-01-12"
+  },
+  {
+    "id": 3,
+    "title": "Reward Points System Launched",
+    "body": "Students can now earn reward points for every completed sit-in session. Check the leaderboard!",
+    "date": "2025-01-10"
+  }
+]

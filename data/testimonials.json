@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "student_id": "2021-00001",
+    "student_name": "Juan Dela Cruz",
+    "course": "BS Computer Science",
+    "testimonial": "The sit-in monitoring system has made it so easy for me to track my lab sessions and manage my reservations. The rewards system is a great motivation!",
+    "date": "2025-01-15",
+    "approved": true
+  },
+  {
+    "id": 2,
+    "student_id": "2021-00002",
+    "student_name": "Maria Santos",
+    "course": "BS Information Technology",
+    "testimonial": "Very user-friendly interface! I can easily check my sit-in history and see how many sessions I have left. The notifications feature is also very helpful.",
+    "date": "2025-01-10",
+    "approved": true
+  },
+  {
+    "id": 3,
+    "student_id": "2021-00003",
+    "student_name": "Carlos Reyes",
+    "course": "BS Computer Science",
+    "testimonial": "The reservation system is a game-changer. No more waiting in line for available PCs. Great job on this system!",
+    "date": "2025-01-08",
+    "approved": true
+  }
+]

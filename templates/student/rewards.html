@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}My Rewards — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/rewards.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+    <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+    <a href="{{ url_for('student_reservation') }}" class="nav-item" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+    <div class="nav-section-label">COMMUNITY</div>
+    <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+    <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+    <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+  <!-- MAIN -->
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">My Rewards</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- Stats -->
+      <div class="stats-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:1.5rem;">
+        <div class="stat-card border-orange">
+          <div class="stat-label">MY REWARD POINTS</div>
+          <div class="stat-value">{{ student.reward_points }}</div>
+        </div>
+        <div class="stat-card border-teal">
+          <div class="stat-label">TOTAL SIT-INS</div>
+          <div class="stat-value">{{ student.sit_in_count }}</div>
+        </div>
+      </div>
+
+      <!-- Leaderboard -->
+      <div class="page-card">
+        <h3 class="section-title">🏆 Leaderboard — Top 10</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Student</th>
+              <th>Course</th>
+              <th>Points</th>
+              <th>Sessions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in leaderboard %}
+            <tr class="{{ 'highlight-row' if s.id == student.id else '' }}">
+              <td>
+                {% if loop.index == 1 %}
+                  <span class="rank-medal gold">🥇 1</span>
+                {% elif loop.index == 2 %}
+                  <span class="rank-medal silver">🥈 2</span>
+                {% elif loop.index == 3 %}
+                  <span class="rank-medal bronze">🥉 3</span>
+                {% else %}
+                  <span class="rank-num">{{ loop.index }}</span>
+                {% endif %}
+              </td>
+              <td>
+                <div class="lb-student">
+                  <div class="lb-avatar">{{ get_initials(s.name) }}</div>
+                  <span class="lb-name">{{ s.name }}{% if s.id == student.id %} <span class="you-tag">You</span>{% endif %}</span>
+                </div>
+              </td>
+              <td>{{ s.course }}</td>
+              <td><strong style="color:var(--teal)">{{ s.reward_points }}</strong></td>
+              <td>{{ s.sit_in_count }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

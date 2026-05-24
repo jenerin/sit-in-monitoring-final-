@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}Software Apps — Admin{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/dashboard.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admin/software_apps.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">OVERVIEW</div>
+    <a href="{{ url_for('admin_dashboard') }}" class="nav-item" id="nav-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('admin_analytics') }}" class="nav-item" id="nav-analytics"><span class="nav-icon">📊</span> Analytics</a>
+    
+    <div class="nav-section-label">STUDENTS</div>
+    <a href="{{ url_for('admin_search_student') }}" class="nav-item" id="nav-search"><span class="nav-icon">🔍</span> Search Student</a>
+    <a href="{{ url_for('admin_student_list') }}" class="nav-item" id="nav-list"><span class="nav-icon">👥</span> Student List</a>
+    
+    <div class="nav-section-label">SIT-IN</div>
+    <a href="{{ url_for('admin_log_sitin') }}" class="nav-item" id="nav-log"><span class="nav-icon">➕</span> Log Sit-in</a>
+    <a href="{{ url_for('admin_current_sitins') }}" class="nav-item" id="nav-current"><span class="nav-icon">🟢</span> Current Sit-ins</a>
+    <a href="{{ url_for('admin_records') }}" class="nav-item" id="nav-records"><span class="nav-icon">📋</span> Records</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('admin_reservation') }}" class="nav-item" id="nav-reservation"><span class="nav-icon">🖥️</span> PC Reservation</a>
+    <a href="{{ url_for('admin_rewards') }}" class="nav-item" id="nav-rewards"><span class="nav-icon">🏆</span> Rewards</a>
+    <a href="{{ url_for('admin_software_apps') }}" class="nav-item" id="nav-software"><span class="nav-icon">💻</span> Software Apps</a>
+    <a href="{{ url_for('admin_testimonials') }}" class="nav-item" id="nav-testimonials"><span class="nav-icon">💬</span> Student Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">CCS Sit-in Monitor</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" aria-label="Toggle dark mode">🌙</button>
+        <span class="admin-label">Admin Panel</span>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-header">
+        <h2 class="page-title">Software Applications</h2>
+        <p class="page-sub">Manage lab software applications</p>
+      </div>
+
+      <!-- ADD NEW APP -->
+      <div class="page-card">
+        <h3 class="section-title">◄ Add New Software</h3>
+        <form method="POST" class="edit-form">
+          <input type="hidden" name="action" value="add" />
+          <div class="form-row">
+            <div class="form-group">
+              <label>Software Name</label>
+              <input type="text" name="name" placeholder="e.g., Visual Studio Code" required />
+            </div>
+            <div class="form-group">
+              <label>Category</label>
+              <input type="text" name="category" placeholder="e.g., Development" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Version</label>
+              <input type="text" name="version" placeholder="e.g., 1.85.0" />
+            </div>
+            <div class="form-group">
+              <label>Lab Location</label>
+              <select name="lab" required>
+                <option value="" disabled selected>Select Lab</option>
+                {% for lab in lab_options %}
+                <option value="{{ lab }}">{{ lab }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="2" placeholder="Brief description of the software"></textarea>
+          </div>
+          <div class="form-group">
+            <label style="display:flex;align-items:center;gap:0.5rem;">
+              <input type="checkbox" name="installed" style="width:auto;" />
+              <span>Installed</span>
+            </label>
+          </div>
+          <button type="submit" class="btn-save">Add Software</button>
+        </form>
+      </div>
+
+      <!-- IMPORT/EXPORT -->
+      <div class="page-card">
+        <h3 class="section-title">◄ Import/Export</h3>
+        <div class="import-export-section">
+          <form action="{{ url_for('admin_software_apps_import') }}" method="POST" enctype="multipart/form-data" class="import-form">
+            <label for="importFile" class="file-label">
+              <span>📁 Import JSON File</span>
+              <input type="file" id="importFile" name="file" accept=".json" />
+            </label>
+            <button type="submit" class="btn-import">Import</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- SOFTWARE LIST -->
+      <div class="page-card">
+        <div class="software-toolbar">
+          <h3 class="section-title">◄ Installed Software ({{ software_apps|length }})</h3>
+          <div class="lab-filter">
+            {% for lab in labs %}
+            <a href="{{ url_for('admin_software_apps', lab=lab) }}" class="lab-pill {% if selected_lab == lab %}active{% endif %}">{{ lab }}</a>
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if software_apps %}
+        <div class="software-table-wrapper">
+          <table class="data-table software-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Version</th>
+                <th>Lab</th>
+                <th>Status</th>
+                <th>Description</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for app in software_apps %}
+              <tr>
+                <td>{{ app.name }}</td>
+                <td>{{ app.category }}</td>
+                <td>{{ app.version }}</td>
+                <td>{{ app.lab }}</td>
+                <td>
+                  <span class="software-status {{ 'status-installed' if app.installed else 'status-not-installed' }}">
+                    {{ 'Installed' if app.installed else 'Not Installed' }}
+                  </span>
+                </td>
+                <td>{{ app.description }}</td>
+                <td class="software-action-cell">
+                  <form method="POST" style="display:inline;">
+                    <input type="hidden" name="action" value="toggle" />
+                    <input type="hidden" name="app_id" value="{{ app.id }}" />
+                    <button type="submit" class="btn-toggle">
+                      {{ 'Disable' if app.installed else 'Enable' }}
+                    </button>
+                  </form>
+                  <form method="POST" style="display:inline;">
+                    <input type="hidden" name="action" value="delete" />
+                    <input type="hidden" name="app_id" value="{{ app.id }}" />
+                    <button type="submit" class="btn-delete" onclick="return confirm('Delete this software?')">🗑</button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <p class="empty-msg">No software applications found for this lab.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Sit-in History — CCS Sit-in Monitor{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student/dashboard.css') }}" />
+{% endblock %}
+
+{% block content %}
+<div class="layout">
+  <aside class="sidebar">
+  <div class="sidebar-logo"><span class="logo-icon">⊙</span><span class="logo-text">CCS Sit-in Monitor</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">MAIN</div>
+    <a href="{{ url_for('student_dashboard') }}" class="nav-item" id="nav-student-dashboard"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="{{ url_for('student_edit_profile') }}" class="nav-item" id="nav-student-profile"><span class="nav-icon">👤</span> Edit Profile</a>
+    <a href="{{ url_for('student_notifications') }}" class="nav-item" id="nav-student-notifications"><span class="nav-icon">🔔</span> Notifications</a>
+    
+    <div class="nav-section-label">LAB</div>
+    <a href="{{ url_for('student_history') }}" class="nav-item" id="nav-student-history"><span class="nav-icon">📋</span> Sit-in History</a>
+    <a href="{{ url_for('student_reservation') }}" class="nav-item" id="nav-student-reserve"><span class="nav-icon">🖥️</span> Reserve PC</a>
+      <a href="{{ url_for('student_software') }}" class="nav-item" id="nav-student-software"><span class="nav-icon">💻</span> Software</a>
+    <div class="nav-section-label">COMMUNITY</div>
+    <a href="{{ url_for('student_announcements') }}" class="nav-item" id="nav-student-announcements"><span class="nav-icon">📢</span> Announcements</a>
+    <a href="{{ url_for('student_rewards') }}" class="nav-item" id="nav-student-rewards"><span class="nav-icon">🏆</span> Rewards & Levels</a>
+    <a href="{{ url_for('student_testimonials') }}" class="nav-item" id="nav-student-testimonials"><span class="nav-icon">💬</span> Testimonials</a>
+  </nav>
+  <div class="sidebar-logout">
+    <a href="{{ url_for('logout') }}"><span>🚪</span> Logout</a>
+  </div>
+</aside>
+
+  <div class="main-area">
+    <header class="topnav">
+      <span class="topnav-title">Sit-in History</span>
+      <div class="topnav-right">
+        <button id="darkModeToggle" class="dark-mode-btn" title="Toggle Dark Mode">🌙</button>
+        <a href="{{ url_for('student_notifications') }}" class="bell-btn">🔔</a>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="page-card">
+        <h3 class="section-title">My Sit-in History</h3>
+        {% if sessions %}
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Date</th>
+              <th>Lab</th>
+              <th>Subject</th>
+              <th>Time In</th>
+              <th>Time Out</th>
+              <th>Status</th>
+              <th>Feedback</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in sessions %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ s.date }}</td>
+              <td>{{ s.lab }}</td>
+              <td>{{ s.subject }}</td>
+              <td>{{ s.time_in }}</td>
+              <td>{{ s.time_out or '—' }}</td>
+              <td><span class="badge-status {{ 'badge-active' if s.status == 'ACTIVE' else 'badge-done' }}">{{ s.status }}</span></td>
+              <td>{{ s.feedback or 'No feedback yet' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <div class="feedback-panel">
+          <h4>Leave Feedback for a Sit-in</h4>
+          <form method="post" action="{{ url_for('student_history_feedback') }}">
+            <label for="session_id">Select session</label>
+            <select id="session_id" name="session_id" class="feedback-select" required>
+              <option value="" disabled selected>Choose a sit-in</option>
+              {% for s in sessions %}
+              <option value="{{ s.id }}">{{ s.date }} | {{ s.lab }} | {{ s.subject or 'No subject' }}</option>
+              {% endfor %}
+            </select>
+
+            <label for="feedback">Feedback</label>
+            <textarea id="feedback" name="feedback" class="feedback-textarea" rows="4" placeholder="Share your experience or leave a comment"></textarea>
+
+            <button type="submit" class="primary-btn">Save Feedback</button>
+          </form>
+        </div>
+        {% else %}
+        <p class="empty-msg">No sit-in history found.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% endblock %}

@@ -1,0 +1,58 @@
+[
+  {
+    "rank": 1,
+    "student_id": "2021-00001",
+    "student_name": "Juan Dela Cruz",
+    "course": "BSCS",
+    "reward_points": 150,
+    "total_sessions": 12
+  },
+  {
+    "rank": 2,
+    "student_id": "2022-00013",
+    "student_name": "Maria Santos",
+    "course": "BSIT",
+    "reward_points": 120,
+    "total_sessions": 9
+  },
+  {
+    "rank": 3,
+    "student_id": "2020-00022",
+    "student_name": "Carlo Mendoza",
+    "course": "BSCS",
+    "reward_points": 200,
+    "total_sessions": 20
+  },
+  {
+    "rank": 4,
+    "student_id": "2021-00038",
+    "student_name": "Rico Lim",
+    "course": "BSCS",
+    "reward_points": 95,
+    "total_sessions": 7
+  },
+  {
+    "rank": 5,
+    "student_id": "2023-00005",
+    "student_name": "Ana Reyes",
+    "course": "BSIT",
+    "reward_points": 80,
+    "total_sessions": 5
+  },
+  {
+    "rank": 6,
+    "student_id": "2022-00099",
+    "student_name": "Leo Garcia",
+    "course": "BSIT",
+    "reward_points": 70,
+    "total_sessions": 4
+  },
+  {
+    "rank": 7,
+    "student_id": "2021-00055",
+    "student_name": "Sofia Cruz",
+    "course": "BSCS",
+    "reward_points": 60,
+    "total_sessions": 3
+  }
+]
