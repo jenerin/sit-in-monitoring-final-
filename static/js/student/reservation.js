@@ -4,14 +4,14 @@
 
 // Lab configs: how many PCs each lab has
 const LAB_CONFIG = {
-  'Lab 1': 30,
-  'Lab 2': 25,
-  'Lab 3': 20,
+  'Lab 524': 30,
+  'Lab 526': 25,
+  'Lab 528': 20,
 };
 
 // Injected from template
 const allReservations = window.RESERVATIONS || [];
-// Admin-set PC status: { "Lab 1": { "1": "available", "2": "unavailable", ... }, ... }
+// Admin-set PC status: { "Lab 524": { "1": "available", "2": "unavailable", ... }, ... }
 const pcStatus = window.PC_STATUS || {};
 
 // Currently selected PC number

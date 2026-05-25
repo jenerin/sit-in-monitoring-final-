@@ -52,9 +52,9 @@
             <div class="form-group">
               <label>Lab</label>
               <select name="lab" id="labSelect" required>
-                <option value="Lab 1">Lab 1 — 30 PCs</option>
-                <option value="Lab 2">Lab 2 — 25 PCs</option>
-                <option value="Lab 3">Lab 3 — 20 PCs</option>
+                <option value="Lab 524">Lab 524 — 30 PCs</option>
+                <option value="Lab 526">Lab 526 — 25 PCs</option>
+                <option value="Lab 528">Lab 528 — 20 PCs</option>
               </select>
             </div>
             <div class="form-group">
@@ -83,7 +83,7 @@
           <h3 class="res-card-title">
             <span class="step-badge">2</span>
             Choose a PC
-            <span class="lab-name-tag" id="labNameTag">Lab 1</span>
+            <span class="lab-name-tag" id="labNameTag">Lab 524</span>
           </h3>
 
           <div class="pc-legend">
@@ -165,7 +165,7 @@
       <span class="res-row" 
             data-id="{{ r.id }}" 
             data-student-id="{{ r.student_id }}" 
-            data-lab="{{ r.lab or 'Lab 1' }}"
+            data-lab="{{ r.lab or 'lab 524' }}"
             data-pc="{{ r.pc_number }}" 
             data-date="{{ r.date }}"
             data-slot="{{ r.time_slot }}"
@@ -204,9 +204,9 @@
   });
 
   window.PC_STATUS = {
-      'Lab 1': {},
-      'Lab 2': {},
-      'Lab 3': {}
+      'Lab 524': {},
+      'Lab 526': {},
+      'Lab 528': {}
   };
 
   document.querySelectorAll('#pc-status-container .pc-row').forEach(el => {

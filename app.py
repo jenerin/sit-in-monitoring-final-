@@ -339,7 +339,7 @@ def student_reservation():
             pc_status[row["lab"]] = {}
         pc_status[row["lab"]][row["pc_number"]] = row["status"]
     
-    labs = ["Lab 1", "Lab 2", "Lab 3"]
+    labs = ["Lab 524", "Lab 526", "Lab 528"]
     for lab in labs:
         if lab not in pc_status:
             pc_status[lab] = {}
@@ -427,7 +427,7 @@ def student_announcements():
     if not announcements:
         announcements = [
             {"title": "Welcome to CCS Lab Monitoring System", "body": "The new sit-in monitoring system is now live. Please register and explore the features.", "date": "2025-01-18"},
-            {"title": "Lab Schedule Update", "body": "Lab 3 will be under maintenance this Friday. Please use Lab 1 or Lab 2.", "date": "2025-01-12"}
+            {"title": "Lab Schedule Update", "body": "Lab 528 will be under maintenance this Friday. Please use Lab 524 or Lab 526.", "date": "2025-01-12"}
         ]
     conn.close()
     unread_count = get_unread_count(session["user"]["id"])
@@ -842,7 +842,7 @@ def admin_reservation():
             pc_status[row["lab"]] = {}
         pc_status[row["lab"]][row["pc_number"]] = row["status"]
     conn.close()
-    labs = ["Lab 1", "Lab 2", "Lab 3"]
+    labs = ["Lab 524", "Lab 526", "Lab 528"]
     for lab in labs:
         if lab not in pc_status:
             pc_status[lab] = {}
@@ -1121,7 +1121,7 @@ def admin_software_apps():
     conn.close()
 
     existing_labs = sorted({row["lab"] for row in labs_rows if row["lab"]})
-    lab_options = ["All Labs", "Lab 1", "Lab 2", "Lab 3"] + [lab for lab in existing_labs if lab not in {"All Labs", "Lab 1", "Lab 2", "Lab 3"}]
+    lab_options = ["All Labs", "Lab 524", "Lab 526", "Lab 528"] + [lab for lab in existing_labs if lab not in {"All Labs", "Lab 524", "Lab 526", "Lab 528"}]
     labs = ["All Labs"] + [lab for lab in existing_labs if lab != "All Labs"]
     software_apps = [dict(a) for a in software_apps]
     if selected_lab and selected_lab != "All Labs":
